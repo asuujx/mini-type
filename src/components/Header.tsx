@@ -17,7 +17,11 @@ function Header({ setNumberOfWords }: any) {
 
   return (
     <div className=" pt-5 flex flex-col items-center">
-      <h1>mini-type</h1>
+      <div className="flex items-center">
+        <img src="/keyboard.png" alt="keyboard-logo" className="w-12" />
+        <h1 className="text-2xl font-semibold">mini-type</h1>
+      </div>
+
       <div className="flex gap-2">
         <button onClick={show10Words}>10</button>
         <button onClick={show25Words}>25</button>
