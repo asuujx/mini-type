@@ -10,7 +10,7 @@ function App() {
   const [numberOfWords, setNumberOfWords] = useState(wordsData.length);
 
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen bg-[#1F4172] text-white">
       <Header setNumberOfWords={setNumberOfWords} />
       <div>
         <Statistics />
