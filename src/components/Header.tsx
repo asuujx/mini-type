@@ -1,18 +1,12 @@
-function Header({ setNumberOfWords }: any) {
-  const show10Words = () => {
-    setNumberOfWords(10);
-  };
+interface Props {
+  handleNumberOfWordsChange: (value: number) => void;
+}
 
-  const show25Words = () => {
-    setNumberOfWords(25);
-  };
-
-  const show50Words = () => {
-    setNumberOfWords(50);
-  };
-
-  const show100Words = () => {
-    setNumberOfWords(100);
+function Header({ handleNumberOfWordsChange }: Props) {
+  const handleButtonClick = (e: any) => {
+    const numberOfWords = parseInt(e.target.name);
+    console.log(numberOfWords);
+    handleNumberOfWordsChange(numberOfWords);
   };
 
   return (
@@ -23,16 +17,32 @@ function Header({ setNumberOfWords }: any) {
       </div>
 
       <div className="px-4 py-2 flex gap-4 rounded-md bg-[#132043]">
-        <button onClick={show10Words} className="hover:text-[#F1B4BB]">
-          10 
+        <button
+          name="10"
+          onClick={handleButtonClick}
+          className="hover:text-[#F1B4BB]"
+        >
+          10
         </button>
-        <button onClick={show25Words} className="hover:text-[#F1B4BB]">
+        <button
+          name="25"
+          onClick={handleButtonClick}
+          className="hover:text-[#F1B4BB]"
+        >
           25
         </button>
-        <button onClick={show50Words} className="hover:text-[#F1B4BB]">
+        <button
+          name="50"
+          onClick={handleButtonClick}
+          className="hover:text-[#F1B4BB]"
+        >
           50
         </button>
-        <button onClick={show100Words} className="hover:text-[#F1B4BB]">
+        <button
+          name="100"
+          onClick={handleButtonClick}
+          className="hover:text-[#F1B4BB]"
+        >
           100
         </button>
       </div>

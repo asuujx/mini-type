@@ -7,7 +7,6 @@ function Statistics() {
       <div>
          <p>WPM</p>
       </div>
-      <div>ACC</div>
     </div>
   )
 }
