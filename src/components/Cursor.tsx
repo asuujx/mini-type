@@ -13,7 +13,7 @@ const Cursor = ({ className }: { className: string }) => (
         repeatType: "mirror",
       },
     }}
-    className={`w-[2px] h-[2.25rem] absolute bg-orange-600 ${className}`}
+    className={`w-[2px] h-[2.25rem] absolute bg-[hsl(200,100%,50%)] ${className}`}
   />
 );
 

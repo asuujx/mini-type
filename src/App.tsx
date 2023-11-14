@@ -47,10 +47,8 @@ function App() {
 
   const handleKeyUp = (ev: KeyboardEvent) => {
     const key = ev.key;
-    console.log(key);
     let _input = input;
     let _letters = [...letters];
-    console.log(_letters);
 
     if (key.length === 1) {
       _input += key;
@@ -70,12 +68,13 @@ function App() {
   };
 
   return (
-    <div className="w-screen h-screen bg-[#1F4172] text-white flex flex-col items-center">
+    <div className="w-screen h-screen flex flex-col mx-auto items-center">
       <Header handleNumberOfWordsChange={handleNumberOfWordsChange} />
       <Typing
         input={input}
         spaceKeyIndexes={spaceKeyIndexes}
         words={wordsConverted}
+        numberOfWords={numberOfWords}
       />
       <Footer />
     </div>
