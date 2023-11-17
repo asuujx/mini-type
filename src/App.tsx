@@ -7,7 +7,7 @@ import Typing from "./components/Typing";
 
 import data from "./assets/words.json";
 
-import Options from "./components/Options";
+import Options from "./components/Options/Options";
 import convertLettersToWords from "./lib/util/convert-letters-to-words";
 import createInitialLetters from "./lib/util/create-initial-letters";
 import getSpaceKeyIndexesFromLetters from "./lib/util/get-space-key-indexes-from-letters";
