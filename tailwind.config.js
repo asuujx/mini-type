@@ -9,6 +9,7 @@ export default {
     },
 
     colors: {
+      black: "#000000",
       primary: {
         100: "#0085ff",
         200: "#69b4ff",
@@ -18,12 +19,12 @@ export default {
         100: "#006fff",
         200: "#e1ffff",
       },
-      "light": {
+      light: {
         100: "#FFFFFF",
         200: "#f5f5f5",
         300: "#cccccc",
       },
-      "dark": {
+      dark: {
         100: "#1E1E1E",
         200: "#2d2d2d",
         300: "#454545",
@@ -37,6 +38,9 @@ export default {
         200: "#5c5c5c",
       },
     },
+      fontFamily: {
+        logo: ["Open Sans"],
+      },
   },
   plugins: [],
 };
