@@ -69,7 +69,7 @@ function App() {
   };
 
   return (
-    <div className="w-screen h-screen flex flex-col mx-auto items-center">
+    <div className="w-screen h-screen flex flex-col mx-auto items-center bg-light-100">
       <Header />
       <Options handleNumberOfWordsChange={handleNumberOfWordsChange} />
       <Typing
