@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { KEY_TYPE } from "../types";
 
-import Footer from "./components/Footer";
+import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
 import Typing from "./components/Typing/Typing";
 
