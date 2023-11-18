@@ -3,7 +3,7 @@ import { KEY_TYPE } from "../types";
 
 import Footer from "./components/Footer";
 import Header from "./components/Header/Header";
-import Typing from "./components/Typing";
+import Typing from "./components/Typing/Typing";
 
 import data from "./assets/words.json";
 
