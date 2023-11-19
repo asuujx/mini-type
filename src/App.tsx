@@ -10,12 +10,13 @@ import data from "./assets/words.json";
 import Options from "./components/Options/Options";
 import convertLettersToWords from "./lib/util/convert-letters-to-words";
 import createInitialLetters from "./lib/util/create-initial-letters";
+import generateRandomWordlist from "./lib/util/generate-random-wordlist";
 import getSpaceKeyIndexesFromLetters from "./lib/util/get-space-key-indexes-from-letters";
 
 function App() {
   const [numberOfWords, setNumberOfWords] = useState(25);
   const [wordsList, setWordsList] = useState<string[]>(
-    data.words.slice(0, numberOfWords + 1)
+    generateRandomWordlist(data, numberOfWords + 1)
   );
   const [input, setInput] = useState("");
   const [letters, setLetters] = useState(createInitialLetters(wordsList));
@@ -36,7 +37,7 @@ function App() {
   }, [input, letters]);
 
   const handleNumberOfWordsChange = (numberOfWords: number) => {
-    let _wordsList = data.words.slice(0, numberOfWords + 1);
+    let _wordsList = generateRandomWordlist(data, numberOfWords + 1);
     setNumberOfWords(numberOfWords);
     setWordsList(_wordsList);
     setLetters(createInitialLetters(_wordsList));

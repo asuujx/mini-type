@@ -1,3 +1,7 @@
+export type Data = {
+  words: string[];
+}
+
 export enum KEY_TYPE {
   NULL,
   INCORRECT,
