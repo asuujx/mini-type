@@ -15,11 +15,13 @@ import getSpaceKeyIndexesFromLetters from "./lib/util/get-space-key-indexes-from
 
 function App() {
   const [numberOfWords, setNumberOfWords] = useState(25);
+  const [numberOfWordsTyped, setNumberOfWordsTyped] = useState(0);
+  const [input, setInput] = useState("");
   const [wordsList, setWordsList] = useState<string[]>(
     generateRandomWordlist(data, numberOfWords + 1)
   );
-  const [input, setInput] = useState("");
   const [letters, setLetters] = useState(createInitialLetters(wordsList));
+
   const wordsConverted = useMemo(
     () => convertLettersToWords(letters),
     [letters]
@@ -41,13 +43,34 @@ function App() {
     setNumberOfWords(numberOfWords);
     setWordsList(_wordsList);
     setLetters(createInitialLetters(_wordsList));
+    setNumberOfWordsTyped(0);
     setInput("");
   };
 
-  // console.log(words);
-  // console.log(`${numberOfWords} | ${words}`);
+  const handleWordsTyped = () => {
+    // console.log(input.length);
+
+    const letterValues = letters.map((letter) => letter.key);
+
+    // console.log(input);
+    console.log(`${input.length} < ${letterValues.length}`);
+    if (
+      input.length < letterValues.length &&
+      letterValues[input.length] == " "
+    ) {
+      setNumberOfWordsTyped((prevCount) => prevCount + 1);
+    }
+  };
+
+  useEffect(() => {
+    handleWordsTyped();
+  }, [input, letters]);
 
   const handleKeyUp = (ev: KeyboardEvent) => {
+    if (input.length === letters.length) {
+      return;
+    }
+
     const key = ev.key;
     let _input = input;
     let _letters = [...letters];
@@ -77,6 +100,7 @@ function App() {
         input={input}
         spaceKeyIndexes={spaceKeyIndexes}
         words={wordsConverted}
+        numberOfWordsTyped={numberOfWordsTyped}
         numberOfWords={numberOfWords}
       />
       <Footer />
