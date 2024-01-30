@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { KEY_TYPE } from "../types";
 
 import Footer from "./components/Footer/Footer";
@@ -47,19 +47,21 @@ function App() {
     setInput("");
   };
 
+
+  const prevWordsCount = useRef(0);
+
   const handleWordsTyped = () => {
-    // console.log(input.length);
+    const words = input.trim().split(" ");
+    const currentWordsCount =
+      words[words.length - 1] === "" ? words.length - 1 : words.length;
 
-    const letterValues = letters.map((letter) => letter.key);
-
-    // console.log(input);
-    console.log(`${input.length} < ${letterValues.length}`);
-    if (
-      input.length < letterValues.length &&
-      letterValues[input.length] == " "
-    ) {
+    if (currentWordsCount < prevWordsCount.current) {
+      setNumberOfWordsTyped((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
+    } else if (currentWordsCount > prevWordsCount.current) {
       setNumberOfWordsTyped((prevCount) => prevCount + 1);
     }
+
+    prevWordsCount.current = currentWordsCount;
   };
 
   useEffect(() => {
