@@ -14,11 +14,7 @@ function Options({ handleNumberOfWordsChange }: Props) {
    return (
       <div className="mt-14 px-8 py-4 text-lg rounded-md shadow-2xl font-semibold flex gap-6 bg-primary-100 text-white-tx-100">
          {options.map((value) => (
-            <Option
-               key={value}
-               value={value}
-               onClick={handleButtonClick}
-            />
+            <Option key={value} value={value} onClick={handleButtonClick} />
          ))}
       </div>
    );
