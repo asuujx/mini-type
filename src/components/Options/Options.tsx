@@ -1,4 +1,3 @@
-import { useState } from "react";
 import Option from "./Option";
 
 interface Props {
@@ -6,12 +5,10 @@ interface Props {
 }
 
 function Options({ handleNumberOfWordsChange }: Props) {
-   const [isActive, setActive] = useState<number | null>(null);
    const options = [10, 25, 50, 100];
 
    const handleButtonClick = (numberOfWords: number) => {
       handleNumberOfWordsChange(numberOfWords);
-      setActive(numberOfWords);
    };
 
    return (
@@ -20,7 +17,6 @@ function Options({ handleNumberOfWordsChange }: Props) {
             <Option
                key={value}
                value={value}
-               isActive={isActive === value}
                onClick={handleButtonClick}
             />
          ))}
