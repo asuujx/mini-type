@@ -14,116 +14,118 @@ import generateRandomWordlist from "./lib/util/generate-random-wordlist";
 import getSpaceKeyIndexesFromLetters from "./lib/util/get-space-key-indexes-from-letters";
 
 function App() {
-  const [numberOfWords, setNumberOfWords] = useState(25);
-  const [numberOfWordsTyped, setNumberOfWordsTyped] = useState(0);
-  const [input, setInput] = useState("");
+   // States
+   const [numberOfWords, setNumberOfWords] = useState(25);
+   const [numberOfWordsTyped, setNumberOfWordsTyped] = useState(0);
+   const [input, setInput] = useState("");
+   const [wordsList, setWordsList] = useState<string[]>(
+      generateRandomWordlist(data, numberOfWords + 1)
+   );
 
-  const [wordsList, setWordsList] = useState<string[]>(
-    generateRandomWordlist(data, numberOfWords + 1)
-  );
-  const [letters, setLetters] = useState(createInitialLetters(wordsList));
+   // Refs
+   const [letters, setLetters] = useState(createInitialLetters(wordsList));
+   const [wpm, setWPM] = useState(0);
 
-  // WPM
-  const [wpm, setWPM] = useState(0);
-  const prevWordsCount = useRef(0);
-  const startTime = useRef(0);
+   const prevWordsCount = useRef(0);
+   const startTime = useRef(0);
 
-  const wordsConverted = useMemo(
-    () => convertLettersToWords(letters),
-    [letters]
-  );
-  const spaceKeyIndexes = useMemo(
-    () => getSpaceKeyIndexesFromLetters(letters),
-    [letters]
-  );
+   // Memos
+   const wordsConverted = useMemo(
+      () => convertLettersToWords(letters),
+      [letters]
+   );
 
-  useEffect(() => {
-    document.addEventListener("keyup", handleKeyUp);
-    return () => {
-      document.removeEventListener("keyup", handleKeyUp);
-    };
-  }, [input, letters]);
+   const spaceKeyIndexes = useMemo(
+      () => getSpaceKeyIndexesFromLetters(letters),
+      [letters]
+   );
 
-  const handleNumberOfWordsChange = (numberOfWords: number) => {
-    let _wordsList = generateRandomWordlist(data, numberOfWords + 1);
-    setNumberOfWords(numberOfWords);
-    setWordsList(_wordsList);
-    setLetters(createInitialLetters(_wordsList));
-    setNumberOfWordsTyped(0);
-    setInput("");
-  };
+   const handleNumberOfWordsChange = (numberOfWords: number) => {
+      let _wordsList = generateRandomWordlist(data, numberOfWords + 1);
 
-  // console.log(startTime);
+      setNumberOfWords(numberOfWords);
+      setWordsList(_wordsList);
+      setLetters(createInitialLetters(_wordsList));
+      setNumberOfWordsTyped(0);
+      setInput("");
+   };
 
-  const handleWordsTyped = () => {
-    const words = input.trim().split(" ");
-    const currentWordsCount =
-      words[words.length - 1] === "" ? words.length - 1 : words.length;
+   const handleWordsTyped = () => {
+      const words = input.trim().split(" ");
+      const currentWordsCount =
+         words[words.length - 1] === "" ? words.length - 1 : words.length;
 
-    if (currentWordsCount < prevWordsCount.current) {
-      setNumberOfWordsTyped((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
-    } else if (currentWordsCount > prevWordsCount.current) {
-      setNumberOfWordsTyped((prevCount) => prevCount + 1);
-    }
+      if (currentWordsCount < prevWordsCount.current) {
+         setNumberOfWordsTyped((prevCount) =>
+            prevCount > 0 ? prevCount - 1 : 0
+         );
+      } else if (currentWordsCount > prevWordsCount.current) {
+         setNumberOfWordsTyped((prevCount) => prevCount + 1);
+      }
 
-    if (prevWordsCount.current === 0) {
-      // Record the start time when the first word is typed
-      startTime.current = Date.now();
-    } else {
-      // Calculate the elapsed time and WPM
-      const elapsedTime = (Date.now() - startTime.current) / 60000; // time in minutes
-      const wpm = currentWordsCount / elapsedTime;
-      setWPM(wpm);
-    }
+      if (prevWordsCount.current === 0) {
+         startTime.current = Date.now();
+      } else {
+         const elapsedTime = (Date.now() - startTime.current) / 60000;
+         const wpm = currentWordsCount / elapsedTime;
+         setWPM(wpm);
+      }
 
-    prevWordsCount.current = currentWordsCount;
-  };
+      prevWordsCount.current = currentWordsCount;
+   };
 
-  useEffect(() => {
-    handleWordsTyped();
-  }, [input, letters]);
+   const handleKeyUp = (ev: KeyboardEvent) => {
+      if (input.length === letters.length) {
+         return;
+      }
 
-  const handleKeyUp = (ev: KeyboardEvent) => {
-    if (input.length === letters.length) {
-      return;
-    }
+      const key = ev.key;
+      let _input = input;
+      let _letters = [...letters];
 
-    const key = ev.key;
-    let _input = input;
-    let _letters = [...letters];
+      if (key.length === 1) {
+         _input += key;
+         let currLetter = _letters[_input.length - 1];
+         _letters[_input.length - 1] =
+            currLetter.key === key
+               ? { ...currLetter, state: KEY_TYPE.CORRECT }
+               : { ...currLetter, state: KEY_TYPE.INCORRECT };
+      } else if (key === "Backspace") {
+         _input = _input.slice(0, -1);
+         let currLetter = _letters[_input.length];
+         _letters[_input.length] = { ...currLetter, state: KEY_TYPE.NULL };
+      }
 
-    if (key.length === 1) {
-      _input += key;
-      let currLetter = _letters[_input.length - 1];
-      _letters[_input.length - 1] =
-        currLetter.key === key
-          ? { ...currLetter, state: KEY_TYPE.CORRECT }
-          : { ...currLetter, state: KEY_TYPE.INCORRECT };
-    } else if (key === "Backspace") {
-      _input = _input.slice(0, -1);
-      let currLetter = _letters[_input.length];
-      _letters[_input.length] = { ...currLetter, state: KEY_TYPE.NULL };
-    }
+      setInput(_input);
+      setLetters(_letters);
+   };
 
-    setInput(_input);
-    setLetters(_letters);
-  };
+   useEffect(() => {
+      document.addEventListener("keyup", handleKeyUp);
+      return () => {
+         document.removeEventListener("keyup", handleKeyUp);
+      };
+   }, [input, letters]);
 
-  return (
-    <div className="w-screen h-screen flex flex-col mx-auto items-center bg-light-100">
-      <Header />
-      <Options handleNumberOfWordsChange={handleNumberOfWordsChange} />
-      <Typing
-        input={input}
-        spaceKeyIndexes={spaceKeyIndexes}
-        words={wordsConverted}
-        numberOfWordsTyped={numberOfWordsTyped}
-        numberOfWords={numberOfWords}
-        wpm={wpm}
-      />
-      <Footer />
-    </div>
-  );
+   useEffect(() => {
+      handleWordsTyped();
+   }, [input, letters]);
+
+   return (
+      <div className="w-screen h-screen flex flex-col mx-auto items-center bg-light-100">
+         <Header />
+         <Options handleNumberOfWordsChange={handleNumberOfWordsChange} />
+         <Typing
+            input={input}
+            spaceKeyIndexes={spaceKeyIndexes}
+            words={wordsConverted}
+            numberOfWordsTyped={numberOfWordsTyped}
+            numberOfWords={numberOfWords}
+            wpm={wpm}
+         />
+         <Footer />
+      </div>
+   );
 }
 
 export default App;

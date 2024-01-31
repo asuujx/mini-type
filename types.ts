@@ -1,17 +1,17 @@
 export type Data = {
-  words: string[];
-}
+   words: string[];
+};
 
 export enum KEY_TYPE {
-  NULL,
-  INCORRECT,
-  CORRECT,
+   NULL,
+   INCORRECT,
+   CORRECT,
 }
 
 export type Letter = {
-  idx: number;
-  key: string;
-  state: KEY_TYPE;
+   idx: number;
+   key: string;
+   state: KEY_TYPE;
 };
 
 export type Words = Letter[][];
