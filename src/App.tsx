@@ -17,10 +17,16 @@ function App() {
   const [numberOfWords, setNumberOfWords] = useState(25);
   const [numberOfWordsTyped, setNumberOfWordsTyped] = useState(0);
   const [input, setInput] = useState("");
+
   const [wordsList, setWordsList] = useState<string[]>(
     generateRandomWordlist(data, numberOfWords + 1)
   );
   const [letters, setLetters] = useState(createInitialLetters(wordsList));
+
+  // WPM
+  const [wpm, setWPM] = useState(0);
+  const prevWordsCount = useRef(0);
+  const startTime = useRef(0);
 
   const wordsConverted = useMemo(
     () => convertLettersToWords(letters),
@@ -47,8 +53,7 @@ function App() {
     setInput("");
   };
 
-
-  const prevWordsCount = useRef(0);
+  // console.log(startTime);
 
   const handleWordsTyped = () => {
     const words = input.trim().split(" ");
@@ -59,6 +64,16 @@ function App() {
       setNumberOfWordsTyped((prevCount) => (prevCount > 0 ? prevCount - 1 : 0));
     } else if (currentWordsCount > prevWordsCount.current) {
       setNumberOfWordsTyped((prevCount) => prevCount + 1);
+    }
+
+    if (prevWordsCount.current === 0) {
+      // Record the start time when the first word is typed
+      startTime.current = Date.now();
+    } else {
+      // Calculate the elapsed time and WPM
+      const elapsedTime = (Date.now() - startTime.current) / 60000; // time in minutes
+      const wpm = currentWordsCount / elapsedTime;
+      setWPM(wpm);
     }
 
     prevWordsCount.current = currentWordsCount;
@@ -104,6 +119,7 @@ function App() {
         words={wordsConverted}
         numberOfWordsTyped={numberOfWordsTyped}
         numberOfWords={numberOfWords}
+        wpm={wpm}
       />
       <Footer />
     </div>
