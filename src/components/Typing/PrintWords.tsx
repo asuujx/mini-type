@@ -9,7 +9,7 @@ interface Props {
 
 function PrintWords({ input, words, spaceKeyIndexes }: Props) {
   return (
-    <div className=" flex flex-wrap gap-x-2 gap-y-1 relative max-h-28 overflow-scroll">
+    <div className=" flex flex-wrap gap-x-2 gap-y-1 relative">
       {input.length === 0 && <Cursor className="top-0 left-0" />}
       {words.map((word, idx) => (
         <div key={idx} className="flex">
